@@ -105,7 +105,7 @@ namespace Paint_2._0
             }
         }
 
-        private void FillQuick(int x, int y, Color oldColor)
+        private void FillBorder(int x, int y, Color oldColor)
         {
             if (x < 0 || y < 0 || x >= map.Width || y >= map.Height)
                 return;
@@ -143,9 +143,22 @@ namespace Paint_2._0
                     else if (map.GetPixel(x + 1, y) != oldColor)
                     {
                         x += 1;
+                        rotation = 1;
                     }
-                    //else
-                        //rotation = 0;
+                    else if (map.GetPixel(x - 1, y - 1) != oldColor)
+                    {
+                        x -= 1;
+                        y -= 1;
+                        rotation = 3;
+                    }
+                    else if (map.GetPixel(x + 1, y - 1) != oldColor)
+                    {
+                        x += 1;
+                        y -= 1;
+                        rotation = 1;
+                    }
+                    else
+                        rotation = 3;
                 }
                 else if (rotation == 3)
                 {
@@ -171,9 +184,22 @@ namespace Paint_2._0
                     else if (map.GetPixel(x, y + 1) != oldColor)
                     {
                         y += 1;
+                        rotation = 2;
                     }
-                    //else
-                    //    rotation = 1;
+                    else if (map.GetPixel(x + 1, y - 1) != oldColor)
+                    {
+                        x += 1;
+                        y -= 1;
+                        rotation = 0;
+                    }
+                    else if (map.GetPixel(x + 1, y + 1) != oldColor)
+                    {
+                        x += 1;
+                        y += 1;
+                        rotation = 2;
+                    }
+                    else
+                        rotation = 2;
                 }
                 else if (rotation == 0)
                 {
@@ -199,9 +225,22 @@ namespace Paint_2._0
                     else if (map.GetPixel(x - 1, y) != oldColor)
                     {
                         x -= 1;
+                        rotation = 3;
                     }
-                    //else
-                    //    rotation = 2;
+                    else if (map.GetPixel(x + 1, y + 1) != oldColor)
+                    {
+                        x += 1;
+                        y += 1;
+                        rotation = 1;
+                    }
+                    else if (map.GetPixel(x - 1, y + 1) != oldColor)
+                    {
+                        x -= 1;
+                        y += 1;
+                        rotation = 3;
+                    }
+                    else
+                        rotation = 1;
                 }
                 else if (rotation == 1)
                 {
@@ -227,12 +266,24 @@ namespace Paint_2._0
                     else if (map.GetPixel(x, y - 1) != oldColor)
                     {
                         y -= 1;
+                        rotation = 0;
                     }
-                    //else
-                    //    rotation = 3;
+                    else if (map.GetPixel(x - 1, y + 1) != oldColor)
+                    {
+                        x -= 1;
+                        y += 1;
+                        rotation = 2;
+                    }
+                    else if (map.GetPixel(x - 1, y - 1) != oldColor)
+                    {
+                        x -= 1;
+                        y -= 1;
+                        rotation = 0;
+                    }
+                    else
+                        rotation = 2;
                 }
             }
-            int firstY = y;
         }
 
         private void Fill(int x, int y, Color oldColor)
@@ -289,7 +340,7 @@ namespace Paint_2._0
             }
             if (state == 4)
             {
-                FillQuick(e.X, e.Y, map.GetPixel(e.X, e.Y));
+                FillBorder(e.X, e.Y, map.GetPixel(e.X, e.Y));
                 pictureBox1.Image = map;
                 return;
             }
