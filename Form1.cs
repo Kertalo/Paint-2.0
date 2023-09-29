@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,11 +23,13 @@ namespace Paint_2._0
             Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             map = new Bitmap(rectangle.Width, rectangle.Height);
             graphics = Graphics.FromImage(map);
+
+            string myExeDir = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.ToString();
+            pictureMap = new Bitmap(myExeDir + @"\cs.jpg");
         }
 
+        Bitmap pictureMap;
         byte state = 0;
-
-        Bitmap pictureMap = new Bitmap(@"cs.jpg");
         
         int oldX;
         int oldY;
