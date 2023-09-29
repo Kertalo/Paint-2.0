@@ -24,8 +24,10 @@ namespace Paint_2._0
             map = new Bitmap(rectangle.Width, rectangle.Height);
             graphics = Graphics.FromImage(map);
 
-            string myExeDir = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.ToString();
-            pictureMap = new Bitmap(myExeDir + @"\cs.jpg");
+            string directory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.ToString();
+            directory = Directory.GetParent(directory).ToString();
+            directory = Directory.GetParent(directory).ToString();
+            pictureMap = new Bitmap(directory + @"\Images\cs.jpg");
         }
 
         Bitmap pictureMap;
