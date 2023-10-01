@@ -23,7 +23,6 @@ namespace Paint_2._0
             Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             map = new Bitmap(rectangle.Width, rectangle.Height);
             graphics = Graphics.FromImage(map);
-
             string directory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.ToString();
             directory = Directory.GetParent(directory).ToString();
             directory = Directory.GetParent(directory).ToString();
@@ -32,17 +31,20 @@ namespace Paint_2._0
 
         Bitmap pictureMap;
         byte state = 0;
-        
+
         int oldX;
         int oldY;
 
         Bitmap map = new Bitmap(256, 256);
+        List<Point> pointsPrimitive;
+        Bitmap mapPrimitive = new Bitmap(256, 256);
         Graphics graphics;
+
         Color color = Color.Black;
 
         bool isMouseDown = false;
 
-        private void DrawLineBR(int x1, int y1, int x2, int y2)
+        private void DrawLine(int x1, int y1, int x2, int y2)
         {
             if (x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0 ||
                 x1 >= map.Width || y1 >= map.Height ||
@@ -116,7 +118,11 @@ namespace Paint_2._0
             if (x < 0 || y < 0 || x >= map.Width || y >= map.Height)
                 return;
             while (map.GetPixel(x, y) == oldColor)
+            {
                 x++;
+                if (x >= map.Width)
+                    return;
+            }
             byte rotation = 2;
             List<Point> points = new List<Point>();
             while (true)
@@ -332,43 +338,52 @@ namespace Paint_2._0
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (state == 2)
+            if (state == 0 || state == 1)
+            {
+                isMouseDown = true;
+                oldX = e.X;
+                oldY = e.Y;
+            }
+            else if (state == 2)
             {
                 Fill(e.X, e.Y, map.GetPixel(e.X, e.Y));
                 pictureBox1.Image = map;
-                return;
             }
-            if (state == 3)
+            else if (state == 3)
             {
                 FillPicture(e.X, e.Y, map.GetPixel(e.X, e.Y));
                 pictureBox1.Image = map;
-                return;
             }
-            if (state == 4)
+            else if (state == 4)
             {
                 FillBorder(e.X, e.Y, map.GetPixel(e.X, e.Y));
                 pictureBox1.Image = map;
-                return;
             }
-            isMouseDown = true;
-            oldX = e.X;
-            oldY = e.Y;
+            else if (state == 5)
+            {
+                pointsPrimitive.Add(new Point(e.X, e.Y));
+                map.SetPixel(e.X, e.Y, color);
+                pictureBox1.Image = map;
+            }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            isMouseDown = false;
-            if (state != 1)
+            if (state != 0 && state != 1)
                 return;
-            DrawLineBR(oldX, oldY, e.X, e.Y);
-            pictureBox1.Image = map;
+            isMouseDown = false;
+            if (state == 1)
+            {
+                DrawLine(oldX, oldY, e.X, e.Y);
+                pictureBox1.Image = map;
+            }
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (state != 0 || !isMouseDown)
                 return;
-            DrawLineBR(oldX, oldY, e.X, e.Y);
+            DrawLine(oldX, oldY, e.X, e.Y);
             pictureBox1.Image = map;
             oldX = e.X;
             oldY = e.Y;
@@ -407,84 +422,34 @@ namespace Paint_2._0
             pictureBox1.Image = map;
         }
 
-        private void button22_Click(object sender, EventArgs e)
+        private void button7_Click(object sender, EventArgs e)
         {
-            color = Color.Black;
-        }
-
-        private void button21_Click(object sender, EventArgs e)
-        {
-            color = Color.Gray;
-        }
-
-        private void button20_Click(object sender, EventArgs e)
-        {
-            color = Color.Silver;
-        }
-
-        private void button19_Click(object sender, EventArgs e)
-        {
-            color = Color.White;
-        }
-
-        private void button18_Click(object sender, EventArgs e)
-        {
-            color = Color.Fuchsia;
-        }
-
-        private void button17_Click(object sender, EventArgs e)
-        {
-            color = Color.Pink; //
-        }
-
-        private void button16_Click(object sender, EventArgs e)
-        {
-            color = Color.Red;
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            color = Color.Maroon;
-        }
-
-        private void button14_Click(object sender, EventArgs e)
-        {
-            color = Color.Yellow;
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            color = Color.Olive;
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            color = Color.Lime;
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            color = Color.Green;
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            color = Color.Aqua;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            color = Color.Teal;
+            color = (sender as Button).BackColor;
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            color = Color.Blue;
+            state = 5;
+            pointsPrimitive = new List<Point>();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void button9_Click(object sender, EventArgs e)
         {
-            color = Color.Navy;
+            int count = pointsPrimitive.Count;
+            if (count > 1)
+            {
+                for (int i = 1; i < count; i++)
+                    DrawLine(pointsPrimitive[i - 1].X, pointsPrimitive[i - 1].Y,
+                        pointsPrimitive[i].X, pointsPrimitive[i].Y);
+                DrawLine(pointsPrimitive[0].X, pointsPrimitive[0].Y,
+                        pointsPrimitive[count - 1].X, pointsPrimitive[count - 1].Y);
+            }
+            pictureBox1.Image = map;
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
