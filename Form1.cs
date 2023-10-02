@@ -336,13 +336,29 @@ namespace Paint_2._0
             }
         }
 
+        private void AssertPoint(int x, int y)
+        {
+
+        }
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (state == 0 || state == 1)
+            if (state == 0)
             {
                 isMouseDown = true;
                 oldX = e.X;
                 oldY = e.Y;
+            }
+            else if (state == 1)
+            {
+                pointsPrimitive.Add(new Point(e.X, e.Y));
+                int count = pointsPrimitive.Count;
+                if (count > 1)
+                    DrawLine(pointsPrimitive[count - 2].X, pointsPrimitive[count - 2].Y,
+                        pointsPrimitive[count - 1].X, pointsPrimitive[count - 1].Y);
+                else
+                    map.SetPixel(e.X, e.Y, color);
+                pictureBox1.Image = map;
             }
             else if (state == 2)
             {
@@ -361,22 +377,16 @@ namespace Paint_2._0
             }
             else if (state == 5)
             {
-                pointsPrimitive.Add(new Point(e.X, e.Y));
                 map.SetPixel(e.X, e.Y, color);
                 pictureBox1.Image = map;
+                AssertPoint(e.X, e.Y);
             }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (state != 0 && state != 1)
-                return;
-            isMouseDown = false;
-            if (state == 1)
-            {
-                DrawLine(oldX, oldY, e.X, e.Y);
-                pictureBox1.Image = map;
-            }
+            if (state == 0)
+                isMouseDown = false;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -397,6 +407,7 @@ namespace Paint_2._0
         private void button2_Click(object sender, EventArgs e)
         {
             state = 1;
+            pointsPrimitive = new List<Point>();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -429,25 +440,24 @@ namespace Paint_2._0
 
         private void button8_Click(object sender, EventArgs e)
         {
-            state = 5;
-            pointsPrimitive = new List<Point>();
+            
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
             int count = pointsPrimitive.Count;
-            if (count > 1)
-            {
-                for (int i = 1; i < count; i++)
-                    DrawLine(pointsPrimitive[i - 1].X, pointsPrimitive[i - 1].Y,
-                        pointsPrimitive[i].X, pointsPrimitive[i].Y);
-                DrawLine(pointsPrimitive[0].X, pointsPrimitive[0].Y,
-                        pointsPrimitive[count - 1].X, pointsPrimitive[count - 1].Y);
-            }
+            if (count > 2)
+                DrawLine(pointsPrimitive[count - 1].X, pointsPrimitive[count - 1].Y,
+                        pointsPrimitive[0].X, pointsPrimitive[0].Y);
             pictureBox1.Image = map;
         }
 
         private void button24_Click(object sender, EventArgs e)
+        {
+            state = 5;
+        }
+
+        private void button26_Click(object sender, EventArgs e)
         {
 
         }
