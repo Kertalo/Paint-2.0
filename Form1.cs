@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
@@ -415,7 +416,8 @@ namespace Paint_2._0
             pictureBox.Image = map;
             panel3.Visible = false;
             panel4.Visible = false;
-            if (state == 5)
+            panel5.Visible = false;
+            if (state == 5 || state == 6)
                 state = 1;
         }
 
@@ -429,9 +431,12 @@ namespace Paint_2._0
             }
             state = 5;
             int count = pointsPrim.Count;
-            DrawLine(pointsPrim[count - 1].X, pointsPrim[count - 1].Y,
-                        pointsPrim[0].X, pointsPrim[0].Y, mapPrim);
+            if (count > 2)
+                DrawLine(pointsPrim[count - 1].X, pointsPrim[count - 1].Y,
+                    pointsPrim[0].X, pointsPrim[0].Y, mapPrim);
             pictureBox.Image = MapAndPrimitive();
+            if (count == 2)
+                panel5.Visible = true;
             panel4.Visible = true;
         }
 
@@ -578,6 +583,19 @@ namespace Paint_2._0
                 FillBorder(e.X, e.Y, map.GetPixel(e.X, e.Y));
                 pictureBox.Image = map;
             }
+            else if (state == 6)
+            {
+                pointsPrim.Add(new Point(e.X, e.Y));
+                mapPrim.SetPixel(e.X, e.Y, color);
+                if (pointsPrim.Count >= 4)
+                {
+                    state = 5;
+                    DrawLine(pointsPrim[2].X, pointsPrim[2].Y,
+                        pointsPrim[3].X, pointsPrim[3].Y, mapPrim);
+                    CrossLines(sender, e);
+                }
+                pictureBox.Image = MapAndPrimitive();
+            }
         }
 
         void PictureBoxMouseUp(object sender, MouseEventArgs e)
@@ -594,6 +612,45 @@ namespace Paint_2._0
             pictureBox.Image = map;
             oldX = e.X;
             oldY = e.Y;
+        }
+
+        private void CrossLines(object sender, EventArgs e)
+        {
+            List<Tuple<PointF, PointF>> lines = new List<Tuple<PointF, PointF>>();
+            var line = new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[1]);
+            lines.Add(line);
+            line = new Tuple<PointF, PointF>(pointsPrim[2], pointsPrim[3]);
+            lines.Add(line);
+
+            var line1 = lines[1];
+            var line2 = lines[0];
+
+            PointF s1 = new PointF();
+            PointF s2 = new PointF();
+
+            s1.X = line1.Item2.X - line1.Item1.X;
+            s1.Y = line1.Item2.Y - line1.Item1.Y;
+            s2.X = line2.Item2.X - line2.Item1.X;
+            s2.Y = line2.Item2.Y - line2.Item1.Y;
+
+            float s = (-s1.Y * (line1.Item1.X - line2.Item1.X)
+                + s1.X * (line1.Item1.Y - line2.Item1.Y)) / (-s2.X * s1.Y + s1.X * s2.Y);
+            float t = (s2.X * (line1.Item1.Y - line2.Item1.Y)
+                - s2.Y * (line1.Item1.X - line2.Item1.X)) / (-s2.X * s1.Y + s1.X * s2.Y);
+
+            if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+            {
+                double x = line1.Item1.X + (t * s1.X);
+                double y = line1.Item1.Y + (t * s1.Y);
+                label1.Text = "(" + (int)x + ", " + (int)y + ")";
+            }
+            else
+                label1.Text = "Fail";
+        }
+
+        private void CrossClick(object sender, EventArgs e)
+        {
+            state = 6;
         }
     }
 }
