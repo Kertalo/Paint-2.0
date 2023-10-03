@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -55,26 +55,34 @@
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button26 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
-            this.button26 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.button8 = new System.Windows.Forms.Button();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.button27 = new System.Windows.Forms.Button();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pictureBox
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 88);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(982, 525);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            this.pictureBox.BackColor = System.Drawing.Color.White;
+            this.pictureBox.Location = new System.Drawing.Point(12, 88);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(982, 525);
+            this.pictureBox.TabIndex = 0;
+            this.pictureBox.TabStop = false;
+            this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseDown);
+            this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseMove);
+            this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseUp);
             // 
             // button1
             // 
@@ -86,7 +94,7 @@
             this.button1.Size = new System.Drawing.Size(32, 32);
             this.button1.TabIndex = 1;
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.PencilClick);
             // 
             // button2
             // 
@@ -97,7 +105,7 @@
             this.button2.Size = new System.Drawing.Size(32, 32);
             this.button2.TabIndex = 2;
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.PrimitiveClick);
             // 
             // button3
             // 
@@ -109,7 +117,7 @@
             this.button3.Size = new System.Drawing.Size(32, 32);
             this.button3.TabIndex = 3;
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.FillClick);
             // 
             // button4
             // 
@@ -121,7 +129,7 @@
             this.button4.Size = new System.Drawing.Size(32, 32);
             this.button4.TabIndex = 4;
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.FillPictureClick);
             // 
             // button5
             // 
@@ -133,7 +141,7 @@
             this.button5.Size = new System.Drawing.Size(32, 32);
             this.button5.TabIndex = 5;
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.BorderClick);
             // 
             // button6
             // 
@@ -145,7 +153,7 @@
             this.button6.Size = new System.Drawing.Size(32, 32);
             this.button6.TabIndex = 6;
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.Click += new System.EventHandler(this.ClearClick);
             // 
             // button7
             // 
@@ -156,7 +164,7 @@
             this.button7.Size = new System.Drawing.Size(32, 32);
             this.button7.TabIndex = 7;
             this.button7.UseVisualStyleBackColor = false;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button7.Click += new System.EventHandler(this.ColorClick);
             // 
             // panel1
             // 
@@ -203,7 +211,7 @@
             this.button23.Size = new System.Drawing.Size(32, 32);
             this.button23.TabIndex = 22;
             this.button23.UseVisualStyleBackColor = false;
-            this.button23.Click += new System.EventHandler(this.button7_Click);
+            this.button23.Click += new System.EventHandler(this.ColorClick);
             // 
             // button22
             // 
@@ -214,7 +222,7 @@
             this.button22.Size = new System.Drawing.Size(32, 32);
             this.button22.TabIndex = 21;
             this.button22.UseVisualStyleBackColor = false;
-            this.button22.Click += new System.EventHandler(this.button7_Click);
+            this.button22.Click += new System.EventHandler(this.ColorClick);
             // 
             // button21
             // 
@@ -225,7 +233,7 @@
             this.button21.Size = new System.Drawing.Size(32, 32);
             this.button21.TabIndex = 20;
             this.button21.UseVisualStyleBackColor = false;
-            this.button21.Click += new System.EventHandler(this.button7_Click);
+            this.button21.Click += new System.EventHandler(this.ColorClick);
             // 
             // button20
             // 
@@ -236,7 +244,7 @@
             this.button20.Size = new System.Drawing.Size(32, 32);
             this.button20.TabIndex = 19;
             this.button20.UseVisualStyleBackColor = false;
-            this.button20.Click += new System.EventHandler(this.button7_Click);
+            this.button20.Click += new System.EventHandler(this.ColorClick);
             // 
             // button19
             // 
@@ -247,7 +255,7 @@
             this.button19.Size = new System.Drawing.Size(32, 32);
             this.button19.TabIndex = 18;
             this.button19.UseVisualStyleBackColor = false;
-            this.button19.Click += new System.EventHandler(this.button7_Click);
+            this.button19.Click += new System.EventHandler(this.ColorClick);
             // 
             // button18
             // 
@@ -258,7 +266,7 @@
             this.button18.Size = new System.Drawing.Size(32, 32);
             this.button18.TabIndex = 17;
             this.button18.UseVisualStyleBackColor = false;
-            this.button18.Click += new System.EventHandler(this.button7_Click);
+            this.button18.Click += new System.EventHandler(this.ColorClick);
             // 
             // button17
             // 
@@ -269,7 +277,7 @@
             this.button17.Size = new System.Drawing.Size(32, 32);
             this.button17.TabIndex = 16;
             this.button17.UseVisualStyleBackColor = false;
-            this.button17.Click += new System.EventHandler(this.button7_Click);
+            this.button17.Click += new System.EventHandler(this.ColorClick);
             // 
             // button16
             // 
@@ -280,7 +288,7 @@
             this.button16.Size = new System.Drawing.Size(32, 32);
             this.button16.TabIndex = 15;
             this.button16.UseVisualStyleBackColor = false;
-            this.button16.Click += new System.EventHandler(this.button7_Click);
+            this.button16.Click += new System.EventHandler(this.ColorClick);
             // 
             // button15
             // 
@@ -291,7 +299,7 @@
             this.button15.Size = new System.Drawing.Size(32, 32);
             this.button15.TabIndex = 14;
             this.button15.UseVisualStyleBackColor = false;
-            this.button15.Click += new System.EventHandler(this.button7_Click);
+            this.button15.Click += new System.EventHandler(this.ColorClick);
             // 
             // button14
             // 
@@ -302,7 +310,7 @@
             this.button14.Size = new System.Drawing.Size(32, 32);
             this.button14.TabIndex = 13;
             this.button14.UseVisualStyleBackColor = false;
-            this.button14.Click += new System.EventHandler(this.button7_Click);
+            this.button14.Click += new System.EventHandler(this.ColorClick);
             // 
             // button13
             // 
@@ -313,7 +321,7 @@
             this.button13.Size = new System.Drawing.Size(32, 32);
             this.button13.TabIndex = 12;
             this.button13.UseVisualStyleBackColor = false;
-            this.button13.Click += new System.EventHandler(this.button7_Click);
+            this.button13.Click += new System.EventHandler(this.ColorClick);
             // 
             // button12
             // 
@@ -324,7 +332,7 @@
             this.button12.Size = new System.Drawing.Size(32, 32);
             this.button12.TabIndex = 11;
             this.button12.UseVisualStyleBackColor = false;
-            this.button12.Click += new System.EventHandler(this.button7_Click);
+            this.button12.Click += new System.EventHandler(this.ColorClick);
             // 
             // button11
             // 
@@ -335,7 +343,7 @@
             this.button11.Size = new System.Drawing.Size(32, 32);
             this.button11.TabIndex = 10;
             this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.button7_Click);
+            this.button11.Click += new System.EventHandler(this.ColorClick);
             // 
             // button10
             // 
@@ -346,7 +354,7 @@
             this.button10.Size = new System.Drawing.Size(32, 32);
             this.button10.TabIndex = 9;
             this.button10.UseVisualStyleBackColor = false;
-            this.button10.Click += new System.EventHandler(this.button7_Click);
+            this.button10.Click += new System.EventHandler(this.ColorClick);
             // 
             // button9
             // 
@@ -357,50 +365,117 @@
             this.button9.Size = new System.Drawing.Size(32, 32);
             this.button9.TabIndex = 8;
             this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button7_Click);
+            this.button9.Click += new System.EventHandler(this.ColorClick);
             // 
             // panel3
             // 
             this.panel3.Controls.Add(this.button26);
-            this.panel3.Controls.Add(this.button25);
             this.panel3.Controls.Add(this.button24);
             this.panel3.Location = new System.Drawing.Point(240, 12);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(200, 70);
+            this.panel3.Size = new System.Drawing.Size(70, 32);
             this.panel3.TabIndex = 0;
+            this.panel3.Visible = false;
+            // 
+            // button26
+            // 
+            this.button26.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button26.BackgroundImage")));
+            this.button26.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button26.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button26.Location = new System.Drawing.Point(0, 0);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(32, 32);
+            this.button26.TabIndex = 10;
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.CancelClick);
             // 
             // button24
             // 
+            this.button24.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button24.BackgroundImage")));
             this.button24.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button24.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button24.Location = new System.Drawing.Point(0, 0);
+            this.button24.Location = new System.Drawing.Point(38, 0);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(32, 32);
             this.button24.TabIndex = 8;
             this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button9_Click);
+            this.button24.Click += new System.EventHandler(this.AcceptClick);
             // 
             // button25
             // 
             this.button25.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button25.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button25.Location = new System.Drawing.Point(38, 0);
+            this.button25.Location = new System.Drawing.Point(0, 0);
             this.button25.Name = "button25";
             this.button25.Size = new System.Drawing.Size(32, 32);
             this.button25.TabIndex = 9;
             this.button25.UseVisualStyleBackColor = true;
-            this.button25.Click += new System.EventHandler(this.button24_Click);
+            this.button25.Click += new System.EventHandler(this.ShiftClick);
             // 
-            // button26
+            // button8
             // 
-            this.button26.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button26.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button26.Location = new System.Drawing.Point(76, 0);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(32, 32);
-            this.button26.TabIndex = 10;
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.button26_Click);
+            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button8.Location = new System.Drawing.Point(0, 38);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(32, 32);
+            this.button8.TabIndex = 11;
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.RotateClick);
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.button27);
+            this.panel4.Controls.Add(this.textBox4);
+            this.panel4.Controls.Add(this.textBox3);
+            this.panel4.Controls.Add(this.textBox2);
+            this.panel4.Controls.Add(this.textBox1);
+            this.panel4.Controls.Add(this.button25);
+            this.panel4.Controls.Add(this.button8);
+            this.panel4.Location = new System.Drawing.Point(316, 12);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(360, 70);
+            this.panel4.TabIndex = 11;
+            this.panel4.Visible = false;
+            // 
+            // button27
+            // 
+            this.button27.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button27.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button27.Location = new System.Drawing.Point(190, 38);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(32, 32);
+            this.button27.TabIndex = 16;
+            this.button27.UseVisualStyleBackColor = true;
+            this.button27.Click += new System.EventHandler(this.ScaleShift);
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(228, 43);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(70, 22);
+            this.textBox4.TabIndex = 15;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(38, 43);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(70, 22);
+            this.textBox3.TabIndex = 14;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(114, 5);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(70, 22);
+            this.textBox2.TabIndex = 13;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(38, 5);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(70, 22);
+            this.textBox1.TabIndex = 12;
             // 
             // Form1
             // 
@@ -408,23 +483,26 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1006, 625);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pictureBox);
             this.Name = "Form1";
-            this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Text = "Paint 2.0";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
@@ -453,6 +531,13 @@
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.TextBox textBox4;
     }
 }
 
