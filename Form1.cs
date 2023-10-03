@@ -31,7 +31,7 @@ namespace Paint_2._0
             string directory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.ToString();
             directory = Directory.GetParent(directory).ToString();
             directory = Directory.GetParent(directory).ToString();
-            mapPict = new Bitmap(directory + @"\Images\night.png");
+            mapPict = new Bitmap(directory + @"\Images\rolik.jpg");
         }
 
         byte state;
@@ -417,6 +417,8 @@ namespace Paint_2._0
             panel3.Visible = false;
             panel4.Visible = false;
             panel5.Visible = false;
+            panel6.Visible = false;
+            panel7.Visible = false;
             if (state == 5 || state == 6)
                 state = 1;
         }
@@ -432,11 +434,17 @@ namespace Paint_2._0
             state = 5;
             int count = pointsPrim.Count;
             if (count > 2)
+            {
+                panel7.Visible = true;
                 DrawLine(pointsPrim[count - 1].X, pointsPrim[count - 1].Y,
                     pointsPrim[0].X, pointsPrim[0].Y, mapPrim);
+            }
             pictureBox.Image = MapAndPrimitive();
             if (count == 2)
+            {
                 panel5.Visible = true;
+                panel6.Visible = true;
+            }
             panel4.Visible = true;
         }
 
@@ -548,6 +556,9 @@ namespace Paint_2._0
 
         void PictureBoxMouseDown(object sender, MouseEventArgs e)
         {
+            if (state == 5)
+                return;
+
             if (state == 0)
             {
                 isMouseDown = true;
@@ -596,6 +607,24 @@ namespace Paint_2._0
                 }
                 pictureBox.Image = MapAndPrimitive();
             }
+            else if (state == 7)
+            {
+                pointsPrim.Add(new Point(e.X, e.Y));
+                mapPrim.SetPixel(e.X, e.Y, color);
+                state = 5;
+                PointLinePosition();
+                pictureBox.Image = MapAndPrimitive();
+            }
+            else if (state == 8)
+            {
+                mapPrim.SetPixel(e.X, e.Y, color);
+                state = 5;
+                if (IsPointInside(new Point(e.X, e.Y)))
+                    label3.Text = "Inside";
+                else
+                    label3.Text = "Outside";
+                pictureBox.Image = MapAndPrimitive();
+            }
         }
 
         void PictureBoxMouseUp(object sender, MouseEventArgs e)
@@ -614,7 +643,7 @@ namespace Paint_2._0
             oldY = e.Y;
         }
 
-        private void CrossLines(object sender, EventArgs e)
+        void CrossLines(object sender, EventArgs e)
         {
             List<Tuple<PointF, PointF>> lines = new List<Tuple<PointF, PointF>>();
             var line = new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[1]);
@@ -648,9 +677,57 @@ namespace Paint_2._0
                 label1.Text = "Fail";
         }
 
-        private void CrossClick(object sender, EventArgs e)
+        void CrossClick(object sender, EventArgs e)
         {
             state = 6;
+        }
+
+        void PointLinePosition()
+        {
+            var line = new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[1]);
+            PointF point = pointsPrim[2];
+            var p = (line.Item2.X - line.Item1.X) * (point.Y - line.Item1.Y)
+                - (line.Item2.Y - line.Item1.Y) * (point.X - line.Item1.X);
+            if (p > 0)
+                label2.Text = "Right";
+            else
+                label2.Text = "Left";
+        }
+
+        void LinePositionLineClick(object sender, EventArgs e)
+        {
+            state = 7;
+        }
+
+        bool IsPointInside(Point point)
+        {
+            int count = 0;
+            for (int i = 0; i < pointsPrim.Count; i++)
+            {
+                Point currentVertex = pointsPrim[i];
+                Point nextVertex = pointsPrim[(i + 1) % pointsPrim.Count];
+                if (IntersectsRay(point, currentVertex, nextVertex))
+                    count++;
+            }
+            return count % 2 == 1;
+        }
+
+        bool IntersectsRay(Point point, Point vertex1, Point vertex2)
+        {
+            if ((vertex1.Y > point.Y && vertex2.Y > point.Y)
+                || (vertex1.Y < point.Y && vertex2.Y < point.Y))
+                return false;
+            if (vertex1.X <= point.X && vertex2.X <= point.X)
+                return false;
+            if (vertex1.X > point.X && vertex2.X > point.X)
+                return true;
+            double intersectX = (vertex2.X - vertex1.X) * ((point.Y - vertex1.Y) / (vertex2.Y - vertex1.Y)) + vertex1.X;
+            return intersectX > point.X;
+        }
+
+        private void PointInsideClick(object sender, EventArgs e)
+        {
+            state = 8;
         }
     }
 }

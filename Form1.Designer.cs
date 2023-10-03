@@ -68,12 +68,20 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button29 = new System.Windows.Forms.Button();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button30 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -181,7 +189,7 @@
             this.panel1.Controls.Add(this.button5);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(222, 70);
+            this.panel1.Size = new System.Drawing.Size(222, 32);
             this.panel1.TabIndex = 24;
             // 
             // panel2
@@ -432,7 +440,6 @@
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.panel5);
             this.panel4.Controls.Add(this.button27);
             this.panel4.Controls.Add(this.textBox4);
             this.panel4.Controls.Add(this.textBox3);
@@ -450,9 +457,9 @@
             // 
             this.panel5.Controls.Add(this.label1);
             this.panel5.Controls.Add(this.button28);
-            this.panel5.Location = new System.Drawing.Point(190, 0);
+            this.panel5.Location = new System.Drawing.Point(12, 50);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(170, 32);
+            this.panel5.Size = new System.Drawing.Size(146, 32);
             this.panel5.TabIndex = 11;
             this.panel5.Visible = false;
             // 
@@ -528,12 +535,74 @@
             this.label1.Size = new System.Drawing.Size(0, 16);
             this.label1.TabIndex = 11;
             // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.label2);
+            this.panel6.Controls.Add(this.button29);
+            this.panel6.Location = new System.Drawing.Point(164, 50);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(146, 32);
+            this.panel6.TabIndex = 12;
+            this.panel6.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(38, 8);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 16);
+            this.label2.TabIndex = 11;
+            // 
+            // button29
+            // 
+            this.button29.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button29.BackgroundImage")));
+            this.button29.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button29.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button29.Location = new System.Drawing.Point(0, 0);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(32, 32);
+            this.button29.TabIndex = 10;
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.LinePositionLineClick);
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.label3);
+            this.panel7.Controls.Add(this.button30);
+            this.panel7.Location = new System.Drawing.Point(506, 12);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(146, 32);
+            this.panel7.TabIndex = 13;
+            this.panel7.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(38, 8);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 16);
+            this.label3.TabIndex = 11;
+            // 
+            // button30
+            // 
+            this.button30.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button30.Location = new System.Drawing.Point(0, 0);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(32, 32);
+            this.button30.TabIndex = 10;
+            this.button30.UseVisualStyleBackColor = true;
+            this.button30.Click += new System.EventHandler(this.PointInsideClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1006, 625);
+            this.Controls.Add(this.panel7);
+            this.Controls.Add(this.panel6);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -550,6 +619,10 @@
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -595,6 +668,12 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button button28;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button29;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button30;
     }
 }
 
