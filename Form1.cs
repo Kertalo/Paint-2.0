@@ -31,7 +31,7 @@ namespace Paint_2._0
             string directory = new FileInfo(Assembly.GetEntryAssembly().Location).Directory.ToString();
             directory = Directory.GetParent(directory).ToString();
             directory = Directory.GetParent(directory).ToString();
-            mapPict = new Bitmap(directory + @"\Images\rolik.jpg");
+            mapPict = new Bitmap(directory + @"\Images\night.png");
         }
 
         byte state;
@@ -512,17 +512,18 @@ namespace Paint_2._0
             Bitmap newMapPrim = new Bitmap(map.Width, map.Height);
             Graphics graphics = Graphics.FromImage(newMapPrim);
             graphics.Clear(Color.White);
-            for (int i = 0; i < map.Width; i++)
-                for (int j = 0; j < map.Height; j++)
-                {
-                    Color c = mapPrim.GetPixel(i, j);
-                    if (c.ToArgb() != Color.White.ToArgb())
-                    {
-                        int[] newXY = MultiplicationD(new int[] { i, j, 1 }, matrix, center);
-                        if (newXY[0] >= 0 && newXY[1] >= 0 && newXY[0] < map.Width && newXY[1] < map.Height)
-                            newMapPrim.SetPixel(newXY[0], newXY[1], mapPrim.GetPixel(i, j));
-                    }
-                }
+            for (int i = 0; i < pointsPrim.Count; i++)
+            {
+                int[] newXY = MultiplicationD(new int[] 
+                { pointsPrim[i].X, pointsPrim[i].Y, 1 }, matrix, center);
+                if (newXY[0] >= 0 && newXY[1] >= 0 && newXY[0] < map.Width && newXY[1] < map.Height)
+                    pointsPrim[i] = new Point(newXY[0], newXY[1]);
+            }
+            for (int i = 0; i < pointsPrim.Count - 1; i++)
+                DrawLine(pointsPrim[i].X, pointsPrim[i].Y,
+                    pointsPrim[i + 1].X, pointsPrim[i + 1].Y, newMapPrim);
+            DrawLine(pointsPrim[pointsPrim.Count - 1].X, pointsPrim[pointsPrim.Count - 1].Y,
+                    pointsPrim[0].X, pointsPrim[0].Y, newMapPrim);
             mapPrim = newMapPrim;
             pictureBox.Image = MapAndPrimitive();
         }
@@ -539,17 +540,18 @@ namespace Paint_2._0
             Bitmap newMapPrim = new Bitmap(map.Width, map.Height);
             Graphics graphics = Graphics.FromImage(newMapPrim);
             graphics.Clear(Color.White);
-            for (int i = 0; i < map.Width; i++)
-                for (int j = 0; j < map.Height; j++)
-                {
-                    Color c = mapPrim.GetPixel(i, j);
-                    if (c.ToArgb() != Color.White.ToArgb())
-                    {
-                        int[] newXY = MultiplicationD(new int[] { i, j, 1 }, matrix, center);
-                        if (newXY[0] >= 0 && newXY[1] >= 0 && newXY[0] < map.Width && newXY[1] < map.Height)
-                            newMapPrim.SetPixel(newXY[0], newXY[1], mapPrim.GetPixel(i, j));
-                    }
-                }
+            for (int i = 0; i < pointsPrim.Count; i++)
+            {
+                int[] newXY = MultiplicationD(new int[]
+                { pointsPrim[i].X, pointsPrim[i].Y, 1 }, matrix, center);
+                if (newXY[0] >= 0 && newXY[1] >= 0 && newXY[0] < map.Width && newXY[1] < map.Height)
+                    pointsPrim[i] = new Point(newXY[0], newXY[1]);
+            }
+            for (int i = 0; i < pointsPrim.Count - 1; i++)
+                DrawLine(pointsPrim[i].X, pointsPrim[i].Y,
+                    pointsPrim[i + 1].X, pointsPrim[i + 1].Y, newMapPrim);
+            DrawLine(pointsPrim[pointsPrim.Count - 1].X, pointsPrim[pointsPrim.Count - 1].Y,
+                    pointsPrim[0].X, pointsPrim[0].Y, newMapPrim);
             mapPrim = newMapPrim;
             pictureBox.Image = MapAndPrimitive();
         }
@@ -603,7 +605,13 @@ namespace Paint_2._0
                     state = 5;
                     DrawLine(pointsPrim[2].X, pointsPrim[2].Y,
                         pointsPrim[3].X, pointsPrim[3].Y, mapPrim);
-                    CrossLines(sender, e);
+                    var point = CrossLines(new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[1]),
+                        new Tuple<PointF, PointF>(pointsPrim[2], pointsPrim[3]));
+                    if (point.Item1)
+                        label1.Text = "(" + (int)point.Item2.X 
+                            + ", " + (int)point.Item2.Y + ")";
+                    else
+                        label1.Text = "Fail";
                 }
                 pictureBox.Image = MapAndPrimitive();
             }
@@ -643,17 +651,9 @@ namespace Paint_2._0
             oldY = e.Y;
         }
 
-        void CrossLines(object sender, EventArgs e)
+        Tuple<bool, Point> CrossLines(Tuple<PointF, PointF> line1,
+            Tuple<PointF, PointF> line2)
         {
-            List<Tuple<PointF, PointF>> lines = new List<Tuple<PointF, PointF>>();
-            var line = new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[1]);
-            lines.Add(line);
-            line = new Tuple<PointF, PointF>(pointsPrim[2], pointsPrim[3]);
-            lines.Add(line);
-
-            var line1 = lines[1];
-            var line2 = lines[0];
-
             PointF s1 = new PointF();
             PointF s2 = new PointF();
 
@@ -671,10 +671,12 @@ namespace Paint_2._0
             {
                 double x = line1.Item1.X + (t * s1.X);
                 double y = line1.Item1.Y + (t * s1.Y);
-                label1.Text = "(" + (int)x + ", " + (int)y + ")";
+                return new Tuple<bool, Point>
+                    (true, new Point((int)x, (int)y));
             }
             else
-                label1.Text = "Fail";
+                return new Tuple<bool, Point>
+                    (false, new Point(-1, -1));
         }
 
         void CrossClick(object sender, EventArgs e)
@@ -685,7 +687,7 @@ namespace Paint_2._0
         void PointLinePosition()
         {
             var line = new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[1]);
-            PointF point = pointsPrim[2];
+            PointF point = pointsPrim[pointsPrim.Count() - 1];
             var p = (line.Item2.X - line.Item1.X) * (point.Y - line.Item1.Y)
                 - (line.Item2.Y - line.Item1.Y) * (point.X - line.Item1.X);
             if (p > 0)
@@ -702,27 +704,31 @@ namespace Paint_2._0
         bool IsPointInside(Point point)
         {
             int count = 0;
-            for (int i = 0; i < pointsPrim.Count; i++)
+            Point point2 = new Point(0, point.Y);
+            //DrawLine(point.X, point.Y, point2.X, point2.Y, map);
+            pictureBox.Image = map;
+            Tuple<bool, Point> isCross;
+            for (int j = 0; j < pointsPrim.Count() - 1; j++)
             {
-                Point currentVertex = pointsPrim[i];
-                Point nextVertex = pointsPrim[(i + 1) % pointsPrim.Count];
-                if (IntersectsRay(point, currentVertex, nextVertex))
+                isCross = CrossLines(
+                    new Tuple<PointF, PointF>(point, point2),
+                    new Tuple<PointF, PointF>(pointsPrim[j], pointsPrim[j + 1]));
+                if (isCross.Item1)
                     count++;
             }
+            isCross = CrossLines(
+                    new Tuple<PointF, PointF>(point, point2),
+                    new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[pointsPrim.Count - 1]));
+            if (isCross.Item1)
+                count++;
+            
+            //for (int i = 0; i < pointsPrim.Count - 1; i++)
+            //{
+            //    Point currentVertex = pointsPrim[i];
+            //    Point nextVertex = pointsPrim[i + 1];
+            //if (IntersectsRay(point, currentVertex, nextVertex))
+            //}
             return count % 2 == 1;
-        }
-
-        bool IntersectsRay(Point point, Point vertex1, Point vertex2)
-        {
-            if ((vertex1.Y > point.Y && vertex2.Y > point.Y)
-                || (vertex1.Y < point.Y && vertex2.Y < point.Y))
-                return false;
-            if (vertex1.X <= point.X && vertex2.X <= point.X)
-                return false;
-            if (vertex1.X > point.X && vertex2.X > point.X)
-                return true;
-            double intersectX = (vertex2.X - vertex1.X) * ((point.Y - vertex1.Y) / (vertex2.Y - vertex1.Y)) + vertex1.X;
-            return intersectX > point.X;
         }
 
         private void PointInsideClick(object sender, EventArgs e)
