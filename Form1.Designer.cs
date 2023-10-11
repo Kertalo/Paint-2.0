@@ -60,20 +60,21 @@
             this.button25 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.button28 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.button28 = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.button29 = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.button30 = new System.Windows.Forms.Button();
+            this.button31 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -440,6 +441,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.panel7);
             this.panel4.Controls.Add(this.button27);
             this.panel4.Controls.Add(this.textBox4);
             this.panel4.Controls.Add(this.textBox3);
@@ -452,28 +454,6 @@
             this.panel4.Size = new System.Drawing.Size(360, 70);
             this.panel4.TabIndex = 11;
             this.panel4.Visible = false;
-            // 
-            // panel5
-            // 
-            this.panel5.Controls.Add(this.label1);
-            this.panel5.Controls.Add(this.button28);
-            this.panel5.Location = new System.Drawing.Point(12, 50);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(146, 32);
-            this.panel5.TabIndex = 11;
-            this.panel5.Visible = false;
-            // 
-            // button28
-            // 
-            this.button28.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button28.BackgroundImage")));
-            this.button28.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button28.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button28.Location = new System.Drawing.Point(0, 0);
-            this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(32, 32);
-            this.button28.TabIndex = 10;
-            this.button28.UseVisualStyleBackColor = true;
-            this.button28.Click += new System.EventHandler(this.CrossClick);
             // 
             // button27
             // 
@@ -527,6 +507,16 @@
             this.textBox1.Text = "0";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.button28);
+            this.panel5.Location = new System.Drawing.Point(12, 50);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(146, 32);
+            this.panel5.TabIndex = 11;
+            this.panel5.Visible = false;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -534,6 +524,18 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 16);
             this.label1.TabIndex = 11;
+            // 
+            // button28
+            // 
+            this.button28.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button28.BackgroundImage")));
+            this.button28.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button28.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button28.Location = new System.Drawing.Point(0, 0);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(32, 32);
+            this.button28.TabIndex = 10;
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.CrossClick);
             // 
             // panel6
             // 
@@ -568,31 +570,45 @@
             // panel7
             // 
             this.panel7.Controls.Add(this.label3);
+            this.panel7.Controls.Add(this.button31);
             this.panel7.Controls.Add(this.button30);
-            this.panel7.Location = new System.Drawing.Point(506, 12);
+            this.panel7.Location = new System.Drawing.Point(190, 0);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(146, 32);
+            this.panel7.Size = new System.Drawing.Size(132, 32);
             this.panel7.TabIndex = 13;
             this.panel7.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 8);
+            this.label3.Location = new System.Drawing.Point(76, 8);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(0, 16);
             this.label3.TabIndex = 11;
             // 
             // button30
             // 
+            this.button30.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button30.BackgroundImage")));
             this.button30.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.button30.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button30.Location = new System.Drawing.Point(0, 0);
+            this.button30.Location = new System.Drawing.Point(38, 0);
             this.button30.Name = "button30";
             this.button30.Size = new System.Drawing.Size(32, 32);
             this.button30.TabIndex = 10;
             this.button30.UseVisualStyleBackColor = true;
             this.button30.Click += new System.EventHandler(this.PointInsideClick);
+            // 
+            // button31
+            // 
+            this.button31.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button31.BackgroundImage")));
+            this.button31.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button31.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button31.Location = new System.Drawing.Point(0, 0);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(32, 32);
+            this.button31.TabIndex = 10;
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.CombiningPolygonsClick);
             // 
             // Form1
             // 
@@ -600,7 +616,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1006, 625);
-            this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
@@ -674,6 +689,7 @@
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button30;
+        private System.Windows.Forms.Button button31;
     }
 }
 

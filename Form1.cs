@@ -43,6 +43,7 @@ namespace Paint_2._0
         Bitmap mapPict;
         Bitmap mapPrim;
         List<Point> pointsPrim;
+        List<Point> pointsPrim2;
 
         Color color = Color.Black;
 
@@ -431,8 +432,19 @@ namespace Paint_2._0
                 CancelClick(sender, e);
                 return;
             }
+            int count;
+            if (state == 9)
+            {
+                state = 10;
+                count = pointsPrim2.Count;
+                if (count > 2)
+                    DrawLine(pointsPrim2[count - 1].X, pointsPrim2[count - 1].Y,
+                        pointsPrim2[0].X, pointsPrim2[0].Y, mapPrim);
+                pictureBox.Image = MapAndPrimitive();
+                return;
+            }
             state = 5;
-            int count = pointsPrim.Count;
+            count = pointsPrim.Count;
             if (count > 2)
             {
                 panel7.Visible = true;
@@ -627,10 +639,21 @@ namespace Paint_2._0
             {
                 mapPrim.SetPixel(e.X, e.Y, color);
                 state = 5;
-                if (IsPointInside(new Point(e.X, e.Y)))
+                if (IsPointInside(new Point(e.X, e.Y), pointsPrim))
                     label3.Text = "Inside";
                 else
                     label3.Text = "Outside";
+                pictureBox.Image = MapAndPrimitive();
+            }
+            else if (state == 9)
+            {
+                pointsPrim2.Add(new Point(e.X, e.Y));
+                int count = pointsPrim2.Count;
+                if (count > 1)
+                    DrawLine(pointsPrim2[count - 2].X, pointsPrim2[count - 2].Y,
+                        pointsPrim2[count - 1].X, pointsPrim2[count - 1].Y, mapPrim);
+                else
+                    mapPrim.SetPixel(e.X, e.Y, color);
                 pictureBox.Image = MapAndPrimitive();
             }
         }
@@ -701,24 +724,24 @@ namespace Paint_2._0
             state = 7;
         }
 
-        bool IsPointInside(Point point)
+        bool IsPointInside(Point point, List<Point> points)
         {
             int count = 0;
             Point point2 = new Point(0, point.Y);
             //DrawLine(point.X, point.Y, point2.X, point2.Y, map);
             pictureBox.Image = map;
             Tuple<bool, Point> isCross;
-            for (int j = 0; j < pointsPrim.Count() - 1; j++)
+            for (int j = 0; j < points.Count() - 1; j++)
             {
                 isCross = CrossLines(
                     new Tuple<PointF, PointF>(point, point2),
-                    new Tuple<PointF, PointF>(pointsPrim[j], pointsPrim[j + 1]));
+                    new Tuple<PointF, PointF>(points[j], points[j + 1]));
                 if (isCross.Item1)
                     count++;
             }
             isCross = CrossLines(
                     new Tuple<PointF, PointF>(point, point2),
-                    new Tuple<PointF, PointF>(pointsPrim[0], pointsPrim[pointsPrim.Count - 1]));
+                    new Tuple<PointF, PointF>(points[0], points[points.Count - 1]));
             if (isCross.Item1)
                 count++;
             
@@ -731,9 +754,197 @@ namespace Paint_2._0
             return count % 2 == 1;
         }
 
-        private void PointInsideClick(object sender, EventArgs e)
+        void PointInsideClick(object sender, EventArgs e)
         {
             state = 8;
+        }
+
+        struct MyPoint
+        {
+            public Point point;
+            public bool isCross;
+            public MyPoint(Point point, bool isCross = false)
+            {
+                this.point = point;
+                this.isCross = isCross;
+            }
+        }
+
+        double LengthBetweenPoint(Point p1, Point p2)
+        {
+            return Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2));
+        }
+
+        List<MyPoint> FindCross(List<Point> points1, List<Point> points2)
+        {
+            points1.Add(points1[0]);
+            points2.Add(points2[0]);
+            List<MyPoint> newPointsPrim = new List<MyPoint>();
+            for (int i = 0; i < points1.Count() - 1; i++)
+            {
+                newPointsPrim.Add(new MyPoint(points1[i]));
+                int count = newPointsPrim.Count;
+                for (int j = 0; j < points2.Count() - 1; j++)
+                {
+                    Tuple<bool, Point> point = CrossLines(
+                        new Tuple<PointF, PointF>(points1[i], points1[i + 1]),
+                        new Tuple<PointF, PointF>(points2[j], points2[j + 1]));
+                    if (point.Item1 == true)
+                        newPointsPrim.Add(new MyPoint(point.Item2, true));
+                }
+                if (newPointsPrim.Count - 2 == count)
+                {
+                    if (LengthBetweenPoint(newPointsPrim[count - 1].point, newPointsPrim[count].point) >
+                        LengthBetweenPoint(newPointsPrim[count - 1].point, newPointsPrim[count + 1].point))
+                    {
+                        Point last = newPointsPrim[newPointsPrim.Count - 1].point;
+                        newPointsPrim[newPointsPrim.Count - 1] = newPointsPrim[newPointsPrim.Count - 2];
+                        newPointsPrim[newPointsPrim.Count - 2] = new MyPoint(last, true);
+                    }
+                }
+            }
+            points1.RemoveAt(points1.Count - 1);
+            points2.RemoveAt(points2.Count - 1);
+            return newPointsPrim;
+        }
+
+        void CombiningPolygons()
+        {
+            if (pointsPrim.Count <= 2 || pointsPrim2.Count <= 2)
+                return;
+
+            int k = 0;
+            Graphics graphics;
+            while (IsPointInside(pointsPrim2[0], pointsPrim))
+            {
+                var cyclePoints = new List<Point>();
+                pointsPrim2.Add(pointsPrim2[0]);
+                for (int j = 1; j < pointsPrim2.Count; j++)
+                    cyclePoints.Add(pointsPrim2[j]);
+                pointsPrim2 = cyclePoints;
+                k++;
+                if (k > pointsPrim2.Count)
+                {
+                    graphics = Graphics.FromImage(mapPrim);
+                    graphics.Clear(Color.White);
+                    pointsPrim.Add(pointsPrim[0]);
+                    for (int j = 0; j < pointsPrim.Count - 1; j++)
+                        DrawLine(pointsPrim[j].X, pointsPrim[j].Y,
+                                pointsPrim[j + 1].X, pointsPrim[j + 1].Y, mapPrim);
+                    pointsPrim.RemoveAt(pointsPrim.Count - 1);
+
+                    pictureBox.Image = MapAndPrimitive();
+                    return;
+                }
+            }
+            
+            List<MyPoint> newPointsPrim1 = FindCross(pointsPrim, pointsPrim2);
+            if (newPointsPrim1.Count <= pointsPrim.Count)
+            {
+                graphics = Graphics.FromImage(mapPrim);
+                graphics.Clear(Color.White);
+                if (IsPointInside(pointsPrim2[0], pointsPrim))
+                {
+                    pointsPrim.Add(pointsPrim[0]);
+                    for (int j = 0; j < pointsPrim.Count - 1; j++)
+                        DrawLine(pointsPrim[j].X, pointsPrim[j].Y,
+                                pointsPrim[j + 1].X, pointsPrim[j + 1].Y, mapPrim);
+                    pointsPrim.RemoveAt(pointsPrim.Count - 1);
+
+                    pictureBox.Image = MapAndPrimitive();
+                }
+                else if (IsPointInside(pointsPrim[0], pointsPrim2))
+                {
+                    pointsPrim = pointsPrim2;
+
+                    pointsPrim.Add(pointsPrim[0]);
+                    for (int j = 0; j < pointsPrim.Count - 1; j++)
+                        DrawLine(pointsPrim[j].X, pointsPrim[j].Y,
+                                pointsPrim[j + 1].X, pointsPrim[j + 1].Y, mapPrim);
+                    pointsPrim.RemoveAt(pointsPrim.Count - 1);
+
+                    pictureBox.Image = MapAndPrimitive();
+                }
+                else
+                {
+                    pictureBox.Image = map;
+                }
+                return;
+            }
+            List<MyPoint> newPointsPrim2 = FindCross(pointsPrim2, pointsPrim);
+
+            pointsPrim = new List<Point>();
+            int i = 0;
+            bool isPointsPrim = false;
+            do
+            {
+                if (isPointsPrim)
+                {
+                    pointsPrim.Add(newPointsPrim1[i].point);
+                    if (newPointsPrim1[i].isCross)
+                    {
+                        isPointsPrim = !isPointsPrim;
+                        for (int j = 0; j < newPointsPrim2.Count; j++)
+                            if (newPointsPrim2[j].point == newPointsPrim1[i].point)
+                            {
+                                i = j + 1;
+                                break;
+                            }
+                    }
+                    else
+                        i++;
+                }
+                else
+                {
+                    pointsPrim.Add(newPointsPrim2[i].point);
+                    if (newPointsPrim2[i].isCross)
+                    {
+                        isPointsPrim = !isPointsPrim;
+                        for (int j = 0; j < newPointsPrim1.Count; j++)
+                            if (newPointsPrim1[j].point == newPointsPrim2[i].point)
+                            {
+                                i = j + 1;
+                                break;
+                            }
+                    }
+                    else
+                        i++;
+                }
+                if (isPointsPrim && i >= newPointsPrim1.Count)
+                    i = 0;
+                if (!isPointsPrim && i >= newPointsPrim2.Count)
+                    i = 0;
+                //if (newPoints.Count > newPointsPrim1.Count + newPointsPrim2.Count)
+                 //   break;
+            }
+            while (i != 0 || isPointsPrim);
+
+            //pointsPrim = newPoints;
+            
+            graphics = Graphics.FromImage(mapPrim);
+            graphics.Clear(Color.White);
+
+            pointsPrim.Add(pointsPrim[0]);
+            for (int j = 0; j < pointsPrim.Count - 1; j++)
+                DrawLine(pointsPrim[j].X, pointsPrim[j].Y,
+                        pointsPrim[j + 1].X, pointsPrim[j + 1].Y, mapPrim);
+            pointsPrim.RemoveAt(pointsPrim.Count - 1);
+
+            pictureBox.Image = MapAndPrimitive();
+        }
+
+        void CombiningPolygonsClick(object sender, EventArgs e)
+        {
+            if (state == 5)
+            {
+                pointsPrim2 = new List<Point>();
+                state = 9;
+            }
+            else if (state == 10)
+            {
+                CombiningPolygons();
+                state = 5;
+            }
         }
     }
 }
